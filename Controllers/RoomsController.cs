@@ -31,16 +31,22 @@ namespace HwaidakAPI.Controllers
             if (hotel == null) return NotFound(new ApiResponse(404, "there is no hotel with this name"));
 
 
-            var rooms = await _context.VwRooms.Where(x => x.HotelId == hotel.HotelId && x.LanguageAbbreviation == languageCode && x.RoomStatus == true &&x.IsDeleted==false).ToListAsync();
+            var rooms = await _context.VwRooms.Where(x => x.HotelId == hotel.HotelId && x.LanguageAbbreviation == languageCode && x.RoomStatus == true &&x.IsDeleted==false).OrderBy(x => x.RoomPosition).ToListAsync();
 
-            var roomDto = _mapper.Map<List<GetRoom>>(rooms);
+            var roomDto = _mapper.Map<List<GetRoomsPageList>>(rooms);
 
             MainResponse pagedetails = new MainResponse
             {
                 PageTitle = hotel.HotelAccommodationTitle,
                 PageBannerPC = _configuration["ImagesLink"] + hotel.HotelAccommodationBanner,
+                PageBannerColorOverlayFrom = hotel.HotelAccommodationBannerColorOverlayFrom,
+                PageBannerColorOverlayTo = hotel.HotelAccommodationBannerColorOverlayTo,
                 PageBannerMobile = _configuration["ImagesLink"] + hotel.HotelAccommodationBannerMobile,
+                PageBannerMobileOverlayFrom = hotel.HotelAccommodationBannerMobileColorOverlayFrom,
+                PageBannerMobileOverlayTo = hotel.HotelAccommodationBannerMobileColorOverlayTo,
                 PageBannerTablet = _configuration["ImagesLink"] + hotel.HotelAccommodationBannerTablet,
+                PageBannerTabletOverlayFrom = hotel.HotelAccommodationBannerTabletColorOverlayFrom,
+                PageBannerTabletOverlayTo = hotel.HotelAccommodationBannerTabletColorOverlayTo,
                 PageText = hotel.HotelAccommodation,
                 PageMetatagTitle = hotel.HotelAccommodationMetatagTitle,
                 PageMetatagDescription = hotel.HotelAccommodationMetatagDescription
@@ -48,7 +54,7 @@ namespace HwaidakAPI.Controllers
 
             foreach (var room in roomDto)
             {
-                room.RoomPhotoHome = _configuration["ImagesLink"] + room.RoomPhotoHome;
+                room.RoomPhoto = _configuration["ImagesLink"] + room.RoomPhoto;
             }
 
 
@@ -88,6 +94,7 @@ namespace HwaidakAPI.Controllers
             {
                 foreach (var otherr in roomDto.OtherRooms)
                 {
+                    otherr.RoomPhoto = _configuration["ImagesLink"] + otherr.RoomPhoto;
                     otherr.RoomPhotoHome = _configuration["ImagesLink"] + otherr.RoomPhotoHome;
                 }
             }

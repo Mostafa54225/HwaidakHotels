@@ -94,6 +94,13 @@ namespace HwaidakAPI.Controllers
                 GroupHomeIntroButtonUrl = groupHomeDto.GroupHomeIntroButtonUrl,
                 GroupHomeIntroActivities = groupHomeIntroActivitiesDto
             };
+            GetGroupHomeAbout groupHomeAbout = new()
+            {
+                GroupHomeAboutPhoto = _configuration["ImagesLink"] + groupHomeDto.GroupHomeAboutPhoto,
+                GroupHomeAboutText = groupHomeDto.GroupHomeAboutText,
+                GroupHomeAboutTitle = groupHomeDto.GroupHomeAboutTitle,
+                GroupHomeAboutTitleTop = groupHomeDto.GroupHomeAboutTitleTop
+            };
             GetGroupSecondSection groupSecondSection = new()
             {
                 GroupHomePhoto1 = _configuration["ImagesLink"] + groupHomeDto.GroupHomePhoto1,
@@ -140,12 +147,12 @@ namespace HwaidakAPI.Controllers
                 Hotels = groupHotelList,
                 GroupHomeSecondSection = groupSecondSection,
                 GroupHomeVideo = groupHomeVideo,
-                HotelNews = groupNewsList
+                HotelNews = groupNewsList,
+                GroupHomeAbout = groupHomeAbout
             };
 
             return Ok(model);
         }
-
 
         [HttpGet("GroupFAQs/{languageCode}")]
         public async Task<ActionResult<GetGroupFAQResponse>> GetGroupFAQs(string languageCode = "en")
@@ -172,8 +179,6 @@ namespace HwaidakAPI.Controllers
             };
             return Ok(model);
         }
-
-
 
 
         [HttpGet("GroupContactUs/{languageCode}")]
@@ -207,11 +212,10 @@ namespace HwaidakAPI.Controllers
         }
 
 
-
         [HttpGet("GroupLayout/{languageCode}")]
         public async Task<ActionResult<GetGroupLayout>> GetGroupLayout(string languageCode = "en")
         {
-            var languages = await _context.MasterLanguages.ToListAsync();
+            var languages = await _context.MasterLanguages.Where(x => x.LangStatus == true).ToListAsync();
             var groupSocials = await _context.TblGroupSocials.Where(x => x.SocialStatus == true).OrderBy(x => x.SocialPosition).ToListAsync();
 
             var groupLayout = await _context.TblGroupLayouts.FirstOrDefaultAsync();
@@ -227,7 +231,8 @@ namespace HwaidakAPI.Controllers
                 groupHeaderDto.Languages.Add(new LanguageResponse
                 {
                     LanguageName = lang.LanguageName,
-                    LanguageAbbreviation = lang.LanguageAbbreviation
+                    LanguageAbbreviation = lang.LanguageAbbreviation,
+                    LanguageFlag = _configuration["ImagesLink"] + lang.LanguageFlag
                 });
             }
 
@@ -247,6 +252,46 @@ namespace HwaidakAPI.Controllers
                 GroupFooter = groupFooterDto
             };
             return Ok(model);
+        }
+
+
+
+        [HttpGet("terms/{languageCode}")]
+        public async Task<ActionResult> GetTerms(string languageCode = "en")
+        {
+            var terms = await _context.VwGroupPages.Where(x => x.LanguageAbbreviation == languageCode).FirstOrDefaultAsync();
+            MainResponse mainResponse = new()
+            {
+                PageTitle = terms.GroupTermsTitle,
+                PageMetatagTitle = terms.GroupTermsMetatagTitle,
+                PageMetatagDescription = terms.GroupTermsMetatagDescription,
+                PageText = terms.GroupTerms,
+                PageBannerPC = _configuration["ImagesLink"] + terms.GroupTermsBanner,
+                PageBannerMobile = _configuration["ImagesLink"] + terms.GroupTermsBannerMobile,
+                PageBannerTablet = _configuration["ImagesLink"] + terms.GroupTermsBannerTablet
+            };
+
+
+            return Ok(mainResponse);
+        }
+
+        [HttpGet("privacyPolicy/{languageCode}")]
+        public async Task<ActionResult> GetPrivacyPolicy(string languageCode = "en")
+        {
+            var terms = await _context.VwGroupPages.Where(x => x.LanguageAbbreviation == languageCode).FirstOrDefaultAsync();
+            MainResponse mainResponse = new()
+            {
+                PageTitle = terms.GroupPrivacyTitle,
+                PageMetatagTitle = terms.GroupPrivacyMetatagTitle,
+                PageMetatagDescription = terms.GroupPrivacyMetatagDescription,
+                PageText = terms.GroupPrivacy,
+                PageBannerPC = _configuration["ImagesLink"] + terms.GroupPrivacyBanner,
+                PageBannerMobile = _configuration["ImagesLink"] + terms.GroupPrivacyBannerMobile,
+                PageBannerTablet = _configuration["ImagesLink"] + terms.GroupPrivacyBannerTablet
+            };
+
+
+            return Ok(mainResponse);
         }
     }
 }

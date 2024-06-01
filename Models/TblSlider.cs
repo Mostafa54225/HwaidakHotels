@@ -38,4 +38,16 @@ public partial class TblSlider
     public double? SliderPhotoHieght { get; set; }
 
     public int? HotelId { get; set; }
+
+    public string SliderPhotoTablet { get; set; }
+
+    public int? SliderPhotoTabletWidth { get; set; }
+
+    public int? SliderPhotoTabletHeight { get; set; }
+
+    public string SliderPhotoMobile { get; set; }
+
+    public int? SliderPhotoMobileWidth { get; set; }
+
+    public int? SliderPhotoMobileHeight { get; set; }
 }

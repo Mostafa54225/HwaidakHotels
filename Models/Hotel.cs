@@ -791,5 +791,27 @@ public partial class Hotel
 
     public int? HotelPhotoGroupHeight { get; set; }
 
+    public bool? IsEnableFaq { get; set; }
+
+    public bool? IsEnableOffer { get; set; }
+
+    public bool? IsEnableSpa { get; set; }
+
+    public bool? IsEnableAwards { get; set; }
+
+    public bool? IsEnableLocation { get; set; }
+
+    public bool? IsEnableAllInclusive { get; set; }
+
+    public bool? IsEnableWedding { get; set; }
+
+    public bool? IsEnableNews { get; set; }
+
+    public bool? IsEnableHoneyMooners { get; set; }
+
+    public bool? IsEnableTestimonials { get; set; }
+
     public virtual ICollection<TblHotelPartner> TblHotelPartners { get; set; } = new List<TblHotelPartner>();
+
+    public virtual ICollection<TblHotelsService> TblHotelsServices { get; set; } = new List<TblHotelsService>();
 }

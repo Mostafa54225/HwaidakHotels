@@ -59,6 +59,12 @@
 
         public string GroupHomeVideoUrl { get; set; }
 
+        public string GroupHomeAboutPhoto { get; set; }
 
+        public string GroupHomeAboutTitleTop { get; set; }
+
+        public string GroupHomeAboutTitle { get; set; }
+
+        public string GroupHomeAboutText { get; set; }
     }
 }

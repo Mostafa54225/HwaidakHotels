@@ -37,5 +37,11 @@ public partial class TblGroupHome
 
     public int? GroupHomePhoto2Height { get; set; }
 
+    public string GroupHomeAboutPhoto { get; set; }
+
+    public int? GroupHomeAboutPhotoWidth { get; set; }
+
+    public int? GroupHomeAboutPhotoHeight { get; set; }
+
     public virtual ICollection<TblGroupHomeContent> TblGroupHomeContents { get; set; } = new List<TblGroupHomeContent>();
 }

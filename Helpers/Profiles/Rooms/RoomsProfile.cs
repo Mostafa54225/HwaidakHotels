@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HwaidakAPI.DTOs;
+using HwaidakAPI.DTOs.Responses.Hotels;
 using HwaidakAPI.DTOs.Responses.Rooms;
 using HwaidakAPI.Models;
 
@@ -27,6 +28,8 @@ namespace HwaidakAPI.Helpers.Profiles.Rooms
 
             CreateMap<VwHotel, MainResponse>();
             CreateMap<VwRoom, GetRoom>();
+            CreateMap<VwRoom, GetRoomsHotelList>();
+            CreateMap<VwRoom, GetRoomsPageList>();
 
             CreateMap<VwRoom, GetRoomDetails>();
         }

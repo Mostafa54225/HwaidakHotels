@@ -29,18 +29,34 @@ namespace HwaidakAPI.Controllers
             if (hotel == null) return NotFound(new ApiResponse(404, "there is no hotel with this name"));
 
 
-            var gallerySections = await _context.VwGalleries.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.GalleryStatus == true).OrderBy(x => x.GalleryPosition).ToListAsync();
-            var galleryPhotos = await _context.VwGalleryPhotos.Where(x => x.LanguageAbbreviation == languageCode && x.PhotoStatus == true && x.GalleryStatus == true).OrderBy(x => x.PhotoPosition).ToListAsync();
-            var gallerySectionDto = _mapper.Map<List<GetGallerySections>>(gallerySections);
-            var galleryPhotosDto = _mapper.Map<List<GetGalleryPhotos>>(galleryPhotos);
+            //var gallerySections = await _context.VwGalleries.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.GalleryStatus == true).OrderBy(x => x.GalleryPosition).ToListAsync();
+            //var galleryPhotos = await _context.VwGalleryPhotos.Where(x => x.LanguageAbbreviation == languageCode && x.PhotoStatus == true && x.GalleryStatus == true).OrderBy(x => x.GalleryPosition).ToListAsync();
+            //var gallerySectionDto = _mapper.Map<List<GetGallerySections>>(gallerySections);
+            
+            var photos = await _context.VwGalleryPhotos
+                .Where(x => x.LanguageAbbreviation == languageCode && x.PhotoStatus == true && x.GalleryStatus == true && x.HotelUrl == hotelUrl)
+                .ToListAsync();
 
+            // Group the photos by their categories and sort each group by PhotoPosition
+            var groupedAndSortedPhotos = photos
+                .GroupBy(photo => photo.GalleryPosition)
+                .OrderBy(group => group.Key) // Sort the categories (optional, if you need the categories to be sorted)
+                .SelectMany(group => group.OrderBy(photo => photo.PhotoPosition))
+                .ToList();
+            var galleryPhotosDto = _mapper.Map<List<GetGalleryPhotos>>(groupedAndSortedPhotos);
 
             MainResponse pagedetails = new MainResponse
             {
                 PageTitle = hotel.HotelGalleryTitle,
                 PageBannerPC = _configuration["ImagesLink"] + hotel.HotelGalleryBanner,
+                PageBannerColorOverlayFrom = hotel.HotelGalleryBannerColorOverlayFrom,
+                PageBannerColorOverlayTo = hotel.HotelGalleryBannerColorOverlayTo,
                 PageBannerMobile = _configuration["ImagesLink"] + hotel.HotelGalleryBannerMobile,
+                PageBannerMobileOverlayFrom = hotel.HotelGalleryBannerMobileColorOverlayFrom,
+                PageBannerMobileOverlayTo = hotel.HotelGalleryBannerMobileColorOverlayTo,
                 PageBannerTablet = _configuration["ImagesLink"] + hotel.HotelGalleryBannerTablet,
+                PageBannerTabletOverlayFrom = hotel.HotelGalleryBannerTabletColorOverlayFrom,
+                PageBannerTabletOverlayTo = hotel.HotelGalleryBannerTabletColorOverlayTo,
                 PageText = hotel.HotelGallery,
                 PageMetatagTitle = hotel.HotelGalleryMetatagTitle,
                 PageMetatagDescription = hotel.HotelGalleryMetatagDescription

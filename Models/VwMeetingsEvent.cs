@@ -106,4 +106,8 @@ public partial class VwMeetingsEvent
     public string FacilityBannerMobileColorOverlayTo { get; set; }
 
     public string Fb360url { get; set; }
+
+    public string MeetingEventsType { get; set; }
+
+    public bool? IsWedding { get; set; }
 }

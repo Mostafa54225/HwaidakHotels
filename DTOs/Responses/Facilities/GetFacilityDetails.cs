@@ -8,11 +8,17 @@
 
         public string FacilityUrl { get; set; }
         public string FacilityBanner { get; set; }
+        public string FacilityBannerColorOverlayFrom { get; set; }
 
+        public string FacilityBannerColorOverlayTo { get; set; }
         public string FacilityBannerTablet { get; set; }
+        public string FacilityBannerTabletColorOverlayFrom { get; set; }
 
+        public string FacilityBannerTabletColorOverlayTo { get; set; }
         public string FacilityBannerMobile { get; set; }
+        public string FacilityBannerMobileColorOverlayTo { get; set; }
 
+        public string FacilityBannerMobileColorOverlayFrom { get; set; }
         public string FacilitySummery { get; set; }
 
         public string FacilityDetails { get; set; }

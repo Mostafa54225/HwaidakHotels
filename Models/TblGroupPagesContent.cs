@@ -91,5 +91,13 @@ public partial class TblGroupPagesContent
 
     public string MetatagDescription { get; set; }
 
+    public string GroupCheckIn { get; set; }
+
+    public string GroupCheckInTitle { get; set; }
+
+    public string GroupCheckInMetatagTitle { get; set; }
+
+    public string GroupCheckInMetatagDescription { get; set; }
+
     public virtual TblGroupPage GroupPages { get; set; }
 }

@@ -10,8 +10,14 @@ namespace HwaidakAPI.DTOs.Responses.Rooms
         public string RoomUrl { get; set; }
         
         public string RoomBanner { get; set; }
+        public string RoomBannerColorOverlayFrom { get; set; }
+        public string RoomBannerColorOverlayTo { get; set; }
         public string RoomBannerTablet { get; set; }
+        public string RoomBannerTabletColorOverlayFrom { get; set; }
+        public string RoomBannerTabletColorOverlayTo { get; set; }
         public string RoomBannerMobile { get; set; }
+        public string RoomBannerMobileColorOverlayFrom { get; set; }
+        public string RoomBannerMobileColorOverlayTo { get; set; }
         public string RoomBannerAltTag { get; set; }
         public string RoomTypeCategoryName { get; set; }
 

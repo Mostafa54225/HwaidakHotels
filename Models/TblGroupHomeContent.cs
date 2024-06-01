@@ -61,5 +61,11 @@ public partial class TblGroupHomeContent
 
     public string GroupContactUsSummery { get; set; }
 
+    public string GroupHomeAboutTitleTop { get; set; }
+
+    public string GroupHomeAboutTitle { get; set; }
+
+    public string GroupHomeAboutText { get; set; }
+
     public virtual TblGroupHome GroupHome { get; set; }
 }

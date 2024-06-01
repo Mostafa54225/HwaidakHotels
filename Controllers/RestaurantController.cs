@@ -30,8 +30,8 @@ namespace HwaidakAPI.Controllers
             if (hotel == null) return NotFound(new ApiResponse(404, "there is no hotel with this name"));
 
 
-            var restaurants = await _context.VwRestaurants.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.RestaurantStatus==true &&x.IsDeleted==false).ToListAsync();
-
+            var restaurants = await _context.VwRestaurants.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.RestaurantStatus==true &&x.IsDeleted==false).OrderBy(x => x.RestaurantPosition).ToListAsync();
+            
             var restaurantDto = _mapper.Map<List<GetRestaurant>>(restaurants);
 
 
@@ -39,8 +39,14 @@ namespace HwaidakAPI.Controllers
             {
                 PageTitle = hotel.HotelDiningTitle,
                 PageBannerPC = _configuration["ImagesLink"] +  hotel.HotelDiningBanner,
+                PageBannerColorOverlayFrom = hotel.HotelDiningBannerColorOverlayFrom,
+                PageBannerColorOverlayTo = hotel.HotelDiningBannerColorOverlayTo,
                 PageBannerMobile = _configuration["ImagesLink"] + hotel.HotelDiningBannerMobile,
+                PageBannerMobileOverlayFrom = hotel.HotelDiningBannerMobileColorOverlayFrom,
+                PageBannerMobileOverlayTo = hotel.HotelDiningBannerMobileColorOverlayTo,
                 PageBannerTablet = _configuration["ImagesLink"] + hotel.HotelDiningBannerTablet,
+                PageBannerTabletOverlayFrom = hotel.HotelDiningBannerTabletColorOverlayFrom,
+                PageBannerTabletOverlayTo = hotel.HotelDiningBannerTabletColorOverlayTo,
                 PageText = hotel.HotelDining,
                 PageMetatagTitle = hotel.HotelDiningMetatagTitle,
                 PageMetatagDescription = hotel.HotelDiningMetatagDescription
@@ -49,7 +55,7 @@ namespace HwaidakAPI.Controllers
             foreach (var rest in restaurantDto)
             {
                 rest.RestaurantPhoto = _configuration["ImagesLink"] + rest.RestaurantPhoto;
-                rest.RestaurantsTypePhoto = _configuration["ImagesLink"] + rest.RestaurantsTypePhoto;
+
             }
 
 
@@ -75,13 +81,11 @@ namespace HwaidakAPI.Controllers
             var restaurantDto = _mapper.Map<GetRestaurantDetails>(restaurantdetails);
 
             restaurantDto.RestaurantPhoto = _configuration["ImagesLink"] + restaurantDto.RestaurantPhoto;
-            restaurantDto.RestaurantsTypePhoto = _configuration["ImagesLink"] + restaurantDto.RestaurantsTypePhoto;
+            //restaurantDto.RestaurantsTypePhoto = _configuration["ImagesLink"] + restaurantDto.RestaurantsTypePhoto;
             restaurantDto.RestaurantBanner = _configuration["ImagesLink"] + restaurantDto.RestaurantBanner;
             restaurantDto.RestaurantBannerTablet = _configuration["ImagesLink"] + restaurantDto.RestaurantBannerTablet;
             restaurantDto.RestaurantBannerMobile = _configuration["ImagesLink"] + restaurantDto.RestaurantBannerMobile;
-            restaurantDto.RestaurantsTypeBanner = _configuration["ImagesLink"] + restaurantDto.RestaurantsTypeBanner;
-            restaurantDto.RestaurantsTypeBannerMobile = _configuration["ImagesLink"] + restaurantDto.RestaurantsTypeBannerMobile;
-            restaurantDto.RestaurantsTypeBannerTablet = _configuration["ImagesLink"] + restaurantDto.RestaurantsTypeBannerTablet;
+
 
 
 
@@ -97,7 +101,7 @@ namespace HwaidakAPI.Controllers
                 foreach (var otherr in restaurantDto.OtherRestaurants)
                 {
                     otherr.RestaurantPhoto = _configuration["ImagesLink"] + otherr.RestaurantPhoto;
-                    otherr.RestaurantsTypePhoto = _configuration["ImagesLink"] + otherr.RestaurantsTypePhoto;
+                    //otherr.RestaurantsTypePhoto = _configuration["ImagesLink"] + otherr.RestaurantsTypePhoto;
                 }
             }
             if (restaurantDto.RestaurantGalleries != null)

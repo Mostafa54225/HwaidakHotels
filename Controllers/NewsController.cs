@@ -32,7 +32,7 @@ namespace HwaidakAPI.Controllers
         {
 
 
-            var News = await _context.VwNews.Where(x => x.HotelUrl == hotelUrl && x.LanguageAbbreviation == languageCode && x.NewsStatus==true&&x.IsDeleted==false).ToListAsync();
+            var News = await _context.VwNews.Where(x => x.HotelUrl == hotelUrl && x.LanguageAbbreviation == languageCode && x.NewsStatus==true&&x.IsDeleted==false).OrderByDescending(x => x.NewsDateTime).ToListAsync();
 
             var NewsDto = _mapper.Map<IEnumerable<GetNewsList>>(News);
 

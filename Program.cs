@@ -1,6 +1,10 @@
+using HwaidakAPI.CheckInModels;
+using HwaidakAPI.Helpers;
 using HwaidakAPI.Middleware;
 using HwaidakAPI.Models;
+using HwaidakAPI.OPModels;
 using Microsoft.EntityFrameworkCore;
+using OrientHGAPI.Helpers;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HwaidakHotelsWsdbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()));
+
+builder.Services.AddDbContext<HwaidakHotelsOpedbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("OPDBConnectionString"),
+        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()));
+
+builder.Services.AddDbContext<HwaidakHotelsOnlineCheckInDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("OnlineCheckInDBConnectionString"),
+        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()));
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.AddHttpClient();
+builder.Services.AddHostedService<PeriodicRequestService>();
 
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -33,7 +50,7 @@ if (app.Environment.IsProduction() || app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseStaticFiles();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseStatusCodePagesWithReExecute("/errors/{0}");

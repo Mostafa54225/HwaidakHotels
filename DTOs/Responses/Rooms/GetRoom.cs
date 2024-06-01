@@ -7,6 +7,7 @@ namespace HwaidakAPI.DTOs.Responses.Rooms
 
         public string RoomName { get; set; }
         public string RoomPhotoHome { get; set; }
+        public string RoomPhoto { get; set; }
         public string RoomUrl { get; set; }
 
         public string HotelUrl { get; set; }

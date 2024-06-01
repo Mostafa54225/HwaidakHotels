@@ -29,11 +29,21 @@ namespace HwaidakAPI.Controllers
 
 
         [HttpGet("{languageCode}")]
-        public async Task<ActionResult<IEnumerable<GetMeetingEvent>>> GetMeetingEvents(string languageCode = "en")
+        public async Task<ActionResult<IEnumerable<GetMeetingEventWithPageDetails>>> GetMeetingEvents(string languageCode = "en")
         {
-            
-            var meetingEvent = await _context.VwMeetingsEvents.Where(x => x.LanguageAbbreviation == languageCode && x.FacilityStatus==true && x.IsDeleted==false).ToListAsync();
-            var meetingEventDto = _mapper.Map<IEnumerable<GetMeetingEvent>>(meetingEvent);
+            var group = await _context.VwGroupPages.Where(x => x.LanguageAbbreviation == languageCode).FirstOrDefaultAsync();
+            MainResponse pagedetails = new()
+            {
+                PageTitle = group.GroupMeetingEventsTitle,
+                PageBannerPC = _configuration["ImagesLink"] + group.GroupMeetingEventsBanner,
+                PageBannerMobile = _configuration["ImagesLink"] + group.GroupMeetingEventsBannerMobile,
+                PageBannerTablet = _configuration["ImagesLink"] + group.GroupMeetingEventsBannerTablet,
+                PageText = group.GroupMeetingEvents,
+                PageMetatagTitle = group.GroupMeetingEventsMetatagTitle,
+                PageMetatagDescription = group.GroupMeetingEventsMetatagDescription
+            };
+            var meetingEvent = await _context.VwMeetingsEvents.Where(x => x.LanguageAbbreviation == languageCode && x.FacilityStatus==true && x.IsDeleted==false).OrderBy(x => x.FacilityPosition).ToListAsync();
+            var meetingEventDto = _mapper.Map<List<GetMeetingEvent>>(meetingEvent);
 
 
             foreach (var meeting in meetingEventDto)
@@ -44,7 +54,12 @@ namespace HwaidakAPI.Controllers
                 meeting.FacilityPhotoHome = _configuration["ImagesLink"] + meeting.FacilityPhotoHome;
                 meeting.HotelUrl = hotel.HotelUrl;
             }
-            return Ok(meetingEventDto);
+            GetMeetingEventWithPageDetails model = new()
+            {
+                PageDetails = pagedetails,
+                MeetingEvent = meetingEventDto
+            };
+            return Ok(model);
         }
 
 
@@ -62,14 +77,20 @@ namespace HwaidakAPI.Controllers
             {
                 PageTitle = hotel.HotelMeetingTitle,
                 PageBannerPC = _configuration["ImagesLink"] + hotel.HotelMeetingBanner,
+                PageBannerColorOverlayFrom = hotel.HotelMeetingBannerColorOverlayFrom,
+                PageBannerColorOverlayTo = hotel.HotelMeetingBannerColorOverlayTo,
                 PageBannerMobile = _configuration["ImagesLink"] + hotel.HotelMeetingBannerMobile,
+                PageBannerMobileOverlayFrom = hotel.HotelMeetingBannerMobileColorOverlayFrom,
+                PageBannerMobileOverlayTo = hotel.HotelMeetingBannerMobileColorOverlayTo,
                 PageBannerTablet = _configuration["ImagesLink"] + hotel.HotelMeetingBannerTablet,
+                PageBannerTabletOverlayFrom = hotel.HotelMeetingBannerTabletColorOverlayFrom,
+                PageBannerTabletOverlayTo = hotel.HotelMeetingBannerTabletColorOverlayTo,
                 PageText = hotel.HotelMeeting,
                 PageMetatagTitle = hotel.HotelMeetingMetatagTitle,
                 PageMetatagDescription = hotel.HotelMeetingMetatagDescription
             };
 
-            var meetingEvent = await _context.VwMeetingsEvents.Where(x => x.HotelId == hotel.HotelId && x.LanguageAbbreviation == languageCode && x.FacilityStatus == true).OrderBy(x => x.FacilityPosition).ToListAsync();
+            var meetingEvent = await _context.VwMeetingsEvents.Where(x => x.HotelId == hotel.HotelId && x.LanguageAbbreviation == languageCode && x.FacilityStatus == true && x.IsWedding == false).OrderBy(x => x.FacilityPosition).ToListAsync();
             var meetingEventDto = _mapper.Map<List<GetMeetingEvent>>(meetingEvent);
 
 
@@ -81,7 +102,7 @@ namespace HwaidakAPI.Controllers
                 meeting.HotelUrl = hotel.HotelUrl;
             }
 
-            GetMeetingEventWithPageDetails model = new GetMeetingEventWithPageDetails
+            GetMeetingEventWithPageDetails model = new()
             {
                 PageDetails = pagedetails,
                 Email = contactsDto.HotelEmail,

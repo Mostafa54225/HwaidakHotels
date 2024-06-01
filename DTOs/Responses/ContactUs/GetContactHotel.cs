@@ -9,6 +9,7 @@
         public string HotelAddress { get; set; }
         public string HotelEmail { get; set; }
         public string HotelPhone { get; set; }
+        public string HotelWhatsAppNumber { get; set; }
         public string ReservationEmail { get; set; }
         public string HotelGoogleMap { get; set; }
         public string HotelGetDirectionLink { get; set; }

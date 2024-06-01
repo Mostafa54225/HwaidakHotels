@@ -71,6 +71,8 @@ public partial class TblMeetingsEvent
 
     public string Fb360url { get; set; }
 
+    public bool? IsWedding { get; set; }
+
     public virtual ICollection<TblMeetingsEventsContent> TblMeetingsEventsContents { get; set; } = new List<TblMeetingsEventsContent>();
 
     public virtual ICollection<TblMeetingsEventsGallery> TblMeetingsEventsGalleries { get; set; } = new List<TblMeetingsEventsGallery>();

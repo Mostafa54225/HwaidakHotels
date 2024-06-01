@@ -8,5 +8,7 @@
         public string FacilitySummery { get; set; }
         public string FacilityUrl { get; set; }
         public string HotelUrl { get; set; }
+        public bool? IsMoreDetails { get; set; }
+
     }
 }

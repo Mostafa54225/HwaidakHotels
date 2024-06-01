@@ -2,6 +2,7 @@
 using HwaidakAPI.DTOs.Responses.Facilities;
 using HwaidakAPI.DTOs.Responses.Home;
 using HwaidakAPI.DTOs.Responses.News;
+using HwaidakAPI.DTOs.Responses.Restaurants;
 using HwaidakAPI.DTOs.Responses.Rooms;
 
 namespace HwaidakAPI.DTOs.Responses.Hotels
@@ -46,10 +47,12 @@ namespace HwaidakAPI.DTOs.Responses.Hotels
 
 
         public List<GetSliders> Sliders { get; set; }
-        public List<GetHotelPartners> HotelPartners { get; set; }
+        public List<GetHotelAwards> HotelAwards { get; set; }
 
-        public List<GetHotelNearBy> HotelNearBy { get; set; }
-        public List<GetRoom> HotelRooms { get; set; } = [];
+        //public List<GetHotelNearBy> HotelNearBy { get; set; }
+        public List<GetRoomsHotelList> HotelRooms { get; set; } = [];
+        public List<GetHotelServices> HotelServices { get; set; }
+        public List<GetRestaurant> HotelRestaurats { get; set; }
         public List<GetFacility> HotelFacilities { get; set; } = [];
         public List<GetNewsList> HotelNews { get; set; } = [];
         //public GetHotelFooter HotelFooter { get; set; }

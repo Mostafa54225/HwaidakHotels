@@ -19,5 +19,7 @@ public partial class TblGroupNewsContent
 
     public string NewsDetails { get; set; }
 
+    public string NewsDateTime { get; set; }
+
     public virtual TblGroupNews News { get; set; }
 }

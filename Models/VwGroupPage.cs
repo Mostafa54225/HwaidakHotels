@@ -95,8 +95,6 @@ public partial class VwGroupPage
 
     public string GroupNewsMetatagDescription { get; set; }
 
-    public int Expr1 { get; set; }
-
     public string GroupTermsBanner { get; set; }
 
     public int? GroupTermsBannerWidth { get; set; }
@@ -262,4 +260,32 @@ public partial class VwGroupPage
     public string MetatagTitle { get; set; }
 
     public string MetatagDescription { get; set; }
+
+    public int GroupPagesId { get; set; }
+
+    public string GroupCheckInBanner { get; set; }
+
+    public int? GroupCheckInBannerWidth { get; set; }
+
+    public int? GroupCheckInBannerHeight { get; set; }
+
+    public string GroupCheckInBannerTablet { get; set; }
+
+    public int? GroupCheckInBannerTabletWidth { get; set; }
+
+    public int? GroupCheckInBannerTabletHeight { get; set; }
+
+    public string GroupCheckInBannerMobile { get; set; }
+
+    public int? GroupCheckInBannerMobileWidth { get; set; }
+
+    public int? GroupCheckInBannerMobileHeight { get; set; }
+
+    public string GroupCheckIn { get; set; }
+
+    public string GroupCheckInTitle { get; set; }
+
+    public string GroupCheckInMetatagTitle { get; set; }
+
+    public string GroupCheckInMetatagDescription { get; set; }
 }

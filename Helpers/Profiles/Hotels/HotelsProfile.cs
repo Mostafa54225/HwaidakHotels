@@ -21,7 +21,8 @@ namespace HwaidakAPI.Helpers.Profiles.Hotels
             CreateMap<VwHotel, GetHotel>()
                 //.ForMember(dest => dest.HotelGallery, opt => opt.Ignore())
                 .ForMember(dest => dest.HotelFacilities, opt => opt.Ignore())
-                .ForMember(dest => dest.HotelNews, opt => opt.Ignore());
+                .ForMember(dest => dest.HotelNews, opt => opt.Ignore())
+                .ForMember(dest => dest.HotelAwards, opt => opt.Ignore());
 
             CreateMap<VwHotel, GetHotelList>();
 
@@ -29,8 +30,15 @@ namespace HwaidakAPI.Helpers.Profiles.Hotels
             CreateMap<VwHotel, GetHotelFooter>();
             CreateMap<VwHotel, GetHotelHeader>();
 
+            CreateMap<VwAward, GetHotelAwards>();
+
             CreateMap<TblHotelsSocialMedium, GetHotelSocials>();
             CreateMap<TblHotelPartner, GetHotelPartners>();
+            CreateMap<VwHotelsService, GetHotelServices>();
+
+
+            CreateMap<VwHotelRestaurantTypesActive, DiningTypes>();
+
 
         }
     }

@@ -21,5 +21,9 @@ public partial class MasterLanguage
 
     public string BookingCurrency { get; set; }
 
+    public virtual ICollection<TblExcursionContent> TblExcursionContents { get; set; } = new List<TblExcursionContent>();
+
     public virtual ICollection<TblGroupSlider> TblGroupSliders { get; set; } = new List<TblGroupSlider>();
+
+    public virtual ICollection<TblHotelsServicesContent> TblHotelsServicesContents { get; set; } = new List<TblHotelsServicesContent>();
 }

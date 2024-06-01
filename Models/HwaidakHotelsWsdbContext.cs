@@ -71,6 +71,10 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<TblDocument> TblDocuments { get; set; }
 
+    public virtual DbSet<TblExcursion> TblExcursions { get; set; }
+
+    public virtual DbSet<TblExcursionContent> TblExcursionContents { get; set; }
+
     public virtual DbSet<TblExtraPage> TblExtraPages { get; set; }
 
     public virtual DbSet<TblExtraPagesContent> TblExtraPagesContents { get; set; }
@@ -151,6 +155,10 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<TblHotelsNearByContent> TblHotelsNearByContents { get; set; }
 
+    public virtual DbSet<TblHotelsService> TblHotelsServices { get; set; }
+
+    public virtual DbSet<TblHotelsServicesContent> TblHotelsServicesContents { get; set; }
+
     public virtual DbSet<TblHotelsSocialMedium> TblHotelsSocialMedia { get; set; }
 
     public virtual DbSet<TblHotelsSpokenLanguage> TblHotelsSpokenLanguages { get; set; }
@@ -205,6 +213,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<TblNews> TblNews { get; set; }
 
+    public virtual DbSet<TblNewsContent> TblNewsContents { get; set; }
+
     public virtual DbSet<TblNewsGallery> TblNewsGalleries { get; set; }
 
     public virtual DbSet<TblOffer> TblOffers { get; set; }
@@ -249,6 +259,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<TblTeamsContent> TblTeamsContents { get; set; }
 
+    public virtual DbSet<TblTestimonial> TblTestimonials { get; set; }
+
     public virtual DbSet<VwAward> VwAwards { get; set; }
 
     public virtual DbSet<VwAwardsFilter> VwAwardsFilters { get; set; }
@@ -256,6 +268,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
     public virtual DbSet<VwBlog> VwBlogs { get; set; }
 
     public virtual DbSet<VwDocument> VwDocuments { get; set; }
+
+    public virtual DbSet<VwExcursion> VwExcursions { get; set; }
 
     public virtual DbSet<VwExtraPage> VwExtraPages { get; set; }
 
@@ -283,8 +297,6 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<VwGroupNews> VwGroupNews { get; set; }
 
-    public virtual DbSet<VwGroupNews1> VwGroupNews1 { get; set; }
-
     public virtual DbSet<VwGroupPage> VwGroupPages { get; set; }
 
     public virtual DbSet<VwGym> VwGyms { get; set; }
@@ -299,6 +311,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
     public virtual DbSet<VwHotel> VwHotels { get; set; }
 
+    public virtual DbSet<VwHotelRestaurantTypesActive> VwHotelRestaurantTypesActives { get; set; }
+
     public virtual DbSet<VwHotelsCreditCard> VwHotelsCreditCards { get; set; }
 
     public virtual DbSet<VwHotelsDestinationCm> VwHotelsDestinationCms { get; set; }
@@ -308,6 +322,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
     public virtual DbSet<VwHotelsFacility> VwHotelsFacilities { get; set; }
 
     public virtual DbSet<VwHotelsNearBy> VwHotelsNearBies { get; set; }
+
+    public virtual DbSet<VwHotelsService> VwHotelsServices { get; set; }
 
     public virtual DbSet<VwHotelsSpokenLanguage> VwHotelsSpokenLanguages { get; set; }
 
@@ -356,6 +372,9 @@ public partial class HwaidakHotelsWsdbContext : DbContext
     public virtual DbSet<VwSpaServicesType> VwSpaServicesTypes { get; set; }
 
     public virtual DbSet<VwTeam> VwTeams { get; set; }
+
+    public virtual DbSet<VwTestimonial> VwTestimonials { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -365,14 +384,13 @@ public partial class HwaidakHotelsWsdbContext : DbContext
                         .AddJsonFile("appsettings.json")
                         .Build();
 
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("OPDBConnectionString");
             optionsBuilder.UseSqlServer(connectionString);
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.HasDefaultSchema("titDevusrWSDB2024");
 
         modelBuilder.Entity<CountriesContent>(entity =>
@@ -1373,6 +1391,20 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.HotelWellnessBannerTabletWidth).HasColumnName("HotelWellness_BannerTablet_Width");
             entity.Property(e => e.HotelWhatsAppNumber).HasMaxLength(250);
             entity.Property(e => e.HotelYouTube).HasMaxLength(250);
+            entity.Property(e => e.IsEnableAllInclusive).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableAwards).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableFaq)
+                .HasDefaultValue(false)
+                .HasColumnName("IsEnableFAQ");
+            entity.Property(e => e.IsEnableHoneyMooners).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableLocation).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableNews).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableOffer).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableSpa)
+                .HasDefaultValue(false)
+                .HasColumnName("IsEnableSPA");
+            entity.Property(e => e.IsEnableTestimonials).HasDefaultValue(false);
+            entity.Property(e => e.IsEnableWedding).HasDefaultValue(false);
             entity.Property(e => e.ReservationEmail).HasMaxLength(250);
             entity.Property(e => e.TripAdvisorKey).HasMaxLength(250);
             entity.Property(e => e.TripAdvisorUrl)
@@ -2156,6 +2188,46 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LangId).HasColumnName("LangID");
         });
 
+        modelBuilder.Entity<TblExcursion>(entity =>
+        {
+            entity.HasKey(e => e.ExcursionId);
+
+            entity.ToTable("tbl_Excursion", "dbo", tb => tb.HasTrigger("Excursions_Content_trigger"));
+
+            entity.Property(e => e.ExcursionId).HasColumnName("ExcursionID");
+            entity.Property(e => e.Banner).HasMaxLength(250);
+            entity.Property(e => e.BannerMobile).HasMaxLength(250);
+            entity.Property(e => e.BannerTablet).HasMaxLength(250);
+            entity.Property(e => e.ExcursionNameSys).HasMaxLength(250);
+            entity.Property(e => e.ExcursionPhoto).HasMaxLength(250);
+            entity.Property(e => e.IsDetails).HasDefaultValue(false);
+        });
+
+        modelBuilder.Entity<TblExcursionContent>(entity =>
+        {
+            entity.HasKey(e => e.ExcursionContentId);
+
+            entity.ToTable("tbl_Excursion_Content", "dbo");
+
+            entity.Property(e => e.ExcursionContentId).HasColumnName("ExcursionContentID");
+            entity.Property(e => e.ExcursionContent).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionId).HasColumnName("ExcursionID");
+            entity.Property(e => e.ExcursionIntro).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionMetatagDescription).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionMetatagTitle).HasMaxLength(250);
+            entity.Property(e => e.ExcursionName).HasMaxLength(250);
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+
+            entity.HasOne(d => d.Excursion).WithMany(p => p.TblExcursionContents)
+                .HasForeignKey(d => d.ExcursionId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_Excursion_Content_tbl_Excursion");
+
+            entity.HasOne(d => d.Lang).WithMany(p => p.TblExcursionContents)
+                .HasForeignKey(d => d.LangId)
+                .HasConstraintName("FK_tbl_Excursion_Content_Master_Languages");
+        });
+
         modelBuilder.Entity<TblExtraPage>(entity =>
         {
             entity.HasKey(e => e.PageId);
@@ -2362,6 +2434,9 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.ToTable("tbl_GroupHome", "dbo", tb => tb.HasTrigger("GroupHome_Content_trigger"));
 
             entity.Property(e => e.GroupHomeId).HasColumnName("GroupHomeID");
+            entity.Property(e => e.GroupHomeAboutPhoto).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeAboutPhotoHeight).HasColumnName("GroupHomeAboutPhoto_Height");
+            entity.Property(e => e.GroupHomeAboutPhotoWidth).HasColumnName("GroupHomeAboutPhoto_Width");
             entity.Property(e => e.GroupHomePhoto1).HasMaxLength(250);
             entity.Property(e => e.GroupHomePhoto1Height).HasColumnName("GroupHomePhoto1_Height");
             entity.Property(e => e.GroupHomePhoto1Width).HasColumnName("GroupHomePhoto1_Width");
@@ -2386,30 +2461,36 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.ToTable("tbl_GroupHomeContent", "dbo");
 
             entity.Property(e => e.GroupHomeContentId).HasColumnName("GroupHomeContentID");
-            entity.Property(e => e.GroupContactUsIcon).HasMaxLength(250);
-            entity.Property(e => e.GroupContactUsSummery).HasMaxLength(250);
-            entity.Property(e => e.GroupContactUsTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupContactUsTitleTop).HasMaxLength(250);
-            entity.Property(e => e.GroupGetDirectionLink).HasDefaultValue("https://www.google.com/maps/place/Morning+Star+Aqua+Center+Touristik/@27.10613,33.829114,15z/data=!4m6!3m5!1s0x145281fca4c970bb:0x8149af53399961b!8m2!3d27.1002295!4d33.8384214!16s%2Fg%2F11swtbr7jf?hl=en&entry=ttu");
-            entity.Property(e => e.GroupHomeHotelTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeHotelTitleTop).HasMaxLength(250);
+            entity.Property(e => e.GroupContactUsIcon).HasColumnType("ntext");
+            entity.Property(e => e.GroupContactUsSummery).HasColumnType("ntext");
+            entity.Property(e => e.GroupContactUsTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupContactUsTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupGetDirectionLink)
+                .HasDefaultValue("https://www.google.com/maps/place/Morning+Star+Aqua+Center+Touristik/@27.10613,33.829114,15z/data=!4m6!3m5!1s0x145281fca4c970bb:0x8149af53399961b!8m2!3d27.1002295!4d33.8384214!16s%2Fg%2F11swtbr7jf?hl=en&entry=ttu")
+                .HasColumnType("ntext");
+            entity.Property(e => e.GroupGoogleMap).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeAboutText).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeAboutTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeAboutTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeHotelTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeHotelTitleTop).HasColumnType("ntext");
             entity.Property(e => e.GroupHomeId).HasColumnName("GroupHomeID");
-            entity.Property(e => e.GroupHomeIntroButton).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeIntroButtonUrl).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeIntroText).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeIntroTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeIntroTitleTop).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeNewsTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeNewsTitleTop).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionButton).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionButtonUrl).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionSubText).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionText).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeSecondSectionTitleTop).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeVideoSectionTitle).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeVideoSectionTitleTop).HasMaxLength(250);
-            entity.Property(e => e.GroupHomeVideoUrl).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeIntroButton).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeIntroButtonUrl).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeIntroText).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeIntroTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeIntroTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeNewsTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeNewsTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionButton).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionButtonUrl).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionSubText).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionText).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeSecondSectionTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeVideoSectionTitle).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeVideoSectionTitleTop).HasColumnType("ntext");
+            entity.Property(e => e.GroupHomeVideoUrl).HasColumnType("ntext");
             entity.Property(e => e.LangId).HasColumnName("LangID");
 
             entity.HasOne(d => d.GroupHome).WithMany(p => p.TblGroupHomeContents)
@@ -2459,7 +2540,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupLogo).HasMaxLength(250);
             entity.Property(e => e.GroupMail).HasMaxLength(250);
             entity.Property(e => e.GroupPhone).HasMaxLength(250);
-            entity.Property(e => e.GroupSummery).HasMaxLength(250);
+            entity.Property(e => e.GroupSummery).HasColumnType("ntext");
         });
 
         modelBuilder.Entity<TblGroupNews>(entity =>
@@ -2481,9 +2562,6 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LangId)
                 .HasDefaultValue(1)
                 .HasColumnName("LangID");
-            entity.Property(e => e.NewsDateTime)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("smalldatetime");
             entity.Property(e => e.NewsItemBanner).HasMaxLength(250);
             entity.Property(e => e.NewsItemBannerMobile)
                 .HasMaxLength(250)
@@ -2515,6 +2593,9 @@ public partial class HwaidakHotelsWsdbContext : DbContext
 
             entity.Property(e => e.NewsContentId).HasColumnName("NewsContentID");
             entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.NewsDateTime)
+                .HasMaxLength(250)
+                .HasDefaultValueSql("(getdate())");
             entity.Property(e => e.NewsDetails).HasMaxLength(250);
             entity.Property(e => e.NewsId).HasColumnName("NewsID");
             entity.Property(e => e.NewsShortDescription).HasMaxLength(250);
@@ -2563,6 +2644,21 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupCarreerBannerTabletHeight).HasColumnName("GroupCarreer_BannerTablet_Height");
             entity.Property(e => e.GroupCarreerBannerTabletWidth).HasColumnName("GroupCarreer_BannerTablet_Width");
             entity.Property(e => e.GroupCarreerBannerWidth).HasColumnName("GroupCarreer_Banner_Width");
+            entity.Property(e => e.GroupCheckInBanner)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_Banner");
+            entity.Property(e => e.GroupCheckInBannerHeight).HasColumnName("GroupCheckIn_Banner_Height");
+            entity.Property(e => e.GroupCheckInBannerMobile)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_BannerMobile");
+            entity.Property(e => e.GroupCheckInBannerMobileHeight).HasColumnName("GroupCheckIn_BannerMobile_Height");
+            entity.Property(e => e.GroupCheckInBannerMobileWidth).HasColumnName("GroupCheckIn_BannerMobile_Width");
+            entity.Property(e => e.GroupCheckInBannerTablet)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_BannerTablet");
+            entity.Property(e => e.GroupCheckInBannerTabletHeight).HasColumnName("GroupCheckIn_BannerTablet_Height");
+            entity.Property(e => e.GroupCheckInBannerTabletWidth).HasColumnName("GroupCheckIn_BannerTablet_Width");
+            entity.Property(e => e.GroupCheckInBannerWidth).HasColumnName("GroupCheckIn_Banner_Width");
             entity.Property(e => e.GroupContactUsBanner)
                 .HasMaxLength(250)
                 .HasColumnName("GroupContactUs_Banner");
@@ -2588,7 +2684,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupFaqBannerMobileHeight).HasColumnName("GroupFAQ_BannerMobile_Height");
             entity.Property(e => e.GroupFaqBannerMobileWidth).HasColumnName("GroupFAQ_BannerMobile_Width");
             entity.Property(e => e.GroupFaqBannerTablet)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .HasColumnName("GroupFAQ_BannerTablet");
             entity.Property(e => e.GroupFaqBannerTabletHeight).HasColumnName("GroupFAQ_BannerTablet_Height");
             entity.Property(e => e.GroupFaqBannerTabletWidth).HasColumnName("GroupFAQ_BannerTablet_Width");
@@ -2633,7 +2729,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupNewsBannerMobileHeight).HasColumnName("GroupNews_BannerMobile_Height");
             entity.Property(e => e.GroupNewsBannerMobileWidth).HasColumnName("GroupNews_BannerMobile_Width");
             entity.Property(e => e.GroupNewsBannerTablet)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .HasColumnName("GroupNews_BannerTablet");
             entity.Property(e => e.GroupNewsBannerTabletHeight).HasColumnName("GroupNews_BannerTablet_Height");
             entity.Property(e => e.GroupNewsBannerTabletWidth).HasColumnName("GroupNews_BannerTablet_Width");
@@ -2697,6 +2793,16 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupCareerTitle)
                 .HasColumnType("ntext")
                 .HasColumnName("GroupCareer_Title");
+            entity.Property(e => e.GroupCheckIn).HasColumnType("ntext");
+            entity.Property(e => e.GroupCheckInMetatagDescription)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_MetatagDescription");
+            entity.Property(e => e.GroupCheckInMetatagTitle)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_MetatagTitle");
+            entity.Property(e => e.GroupCheckInTitle)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_Title");
             entity.Property(e => e.GroupContactUs).HasColumnType("ntext");
             entity.Property(e => e.GroupContactUsMetatagDescription)
                 .HasColumnType("ntext")
@@ -2795,6 +2901,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.SliderButtonText).HasMaxLength(250);
             entity.Property(e => e.SliderMainText).HasMaxLength(250);
             entity.Property(e => e.SliderPhoto).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoMobile).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoTablet).HasMaxLength(250);
             entity.Property(e => e.SliderSubText).HasMaxLength(250);
             entity.Property(e => e.SliderbuttonUrl)
                 .HasMaxLength(250)
@@ -2928,7 +3036,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
         {
             entity.HasKey(e => e.HomeId);
 
-            entity.ToTable("tbl_Home", "dbo");
+            entity.ToTable("tbl_Home", "dbo", tb => tb.HasTrigger("Home_Content_trigger"));
 
             entity.Property(e => e.HomeId).HasColumnName("HomeID");
             entity.Property(e => e.AboutUsPhoto).HasMaxLength(250);
@@ -3051,6 +3159,11 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.SectionWelcomeTitleText).HasColumnType("ntext");
             entity.Property(e => e.SectionWhyChooseUsText).HasMaxLength(250);
             entity.Property(e => e.SectionWhyChooseUsTittle).HasMaxLength(250);
+
+            entity.HasOne(d => d.Home).WithMany(p => p.TblHomeContents)
+                .HasForeignKey(d => d.HomeId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_Home_Content_tbl_Home");
         });
 
         modelBuilder.Entity<TblHomeDiscover>(entity =>
@@ -3213,6 +3326,45 @@ public partial class HwaidakHotelsWsdbContext : DbContext
                 .HasForeignKey(d => d.HotelNearById)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_tbl_Hotels_NearBy_Content_tbl_Hotels_NearBy");
+        });
+
+        modelBuilder.Entity<TblHotelsService>(entity =>
+        {
+            entity.HasKey(e => e.ServiceId);
+
+            entity.ToTable("tbl_Hotels_Services", "dbo", tb => tb.HasTrigger("tbl_Hotels_services_Content_trigger"));
+
+            entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
+            entity.Property(e => e.HotelId).HasColumnName("HotelID");
+            entity.Property(e => e.ServiceIcon).HasMaxLength(250);
+            entity.Property(e => e.ServiceNameSys).HasMaxLength(250);
+
+            entity.HasOne(d => d.Hotel).WithMany(p => p.TblHotelsServices)
+                .HasForeignKey(d => d.HotelId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_Hotels_Services_Hotels");
+        });
+
+        modelBuilder.Entity<TblHotelsServicesContent>(entity =>
+        {
+            entity.HasKey(e => e.ServiceContentId).HasName("PK_tbl_Hotel_services_Content");
+
+            entity.ToTable("tbl_Hotels_services_Content", "dbo");
+
+            entity.Property(e => e.ServiceContentId).HasColumnName("ServiceContentID");
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
+            entity.Property(e => e.SeviceName).HasMaxLength(250);
+
+            entity.HasOne(d => d.Lang).WithMany(p => p.TblHotelsServicesContents)
+                .HasForeignKey(d => d.LangId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_Hotel_services_Content_Master_Languages");
+
+            entity.HasOne(d => d.Service).WithMany(p => p.TblHotelsServicesContents)
+                .HasForeignKey(d => d.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_Hotel_services_Content_tbl_Hotels_Services");
         });
 
         modelBuilder.Entity<TblHotelsSocialMedium>(entity =>
@@ -3609,6 +3761,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LangId).HasColumnName("LangID");
             entity.Property(e => e.MeetingCapacity).HasColumnType("ntext");
             entity.Property(e => e.MeetingCellingHeight).HasMaxLength(250);
+            entity.Property(e => e.MeetingEventsType).HasMaxLength(250);
             entity.Property(e => e.MeetingLength).HasMaxLength(250);
             entity.Property(e => e.MeetingSize).HasMaxLength(250);
             entity.Property(e => e.MeetingWidths).HasMaxLength(250);
@@ -3674,7 +3827,11 @@ public partial class HwaidakHotelsWsdbContext : DbContext
         {
             entity.HasKey(e => e.NewsId);
 
-            entity.ToTable("tbl_News", "dbo", tb => tb.HasTrigger("NewsURL"));
+            entity.ToTable("tbl_News", "dbo", tb =>
+                {
+                    tb.HasTrigger("NewsURL");
+                    tb.HasTrigger("News_Content_trigger");
+                });
 
             entity.Property(e => e.NewsId).HasColumnName("NewsID");
             entity.Property(e => e.CreationDate)
@@ -3686,10 +3843,6 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LangId)
                 .HasDefaultValue(1)
                 .HasColumnName("LangID");
-            entity.Property(e => e.NewsDateTime)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("smalldatetime");
-            entity.Property(e => e.NewsDetails).HasColumnType("ntext");
             entity.Property(e => e.NewsItemBanner).HasMaxLength(250);
             entity.Property(e => e.NewsItemBannerMobile)
                 .HasMaxLength(250)
@@ -3704,7 +3857,6 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.NewsItemBannerTabletHieght).HasColumnName("NewsItemBanner_TabletHieght");
             entity.Property(e => e.NewsItemBannerTabletWidth).HasColumnName("NewsItemBanner_TabletWidth");
             entity.Property(e => e.NewsPhoto).HasMaxLength(250);
-            entity.Property(e => e.NewsShortDescription).HasColumnType("ntext");
             entity.Property(e => e.NewsStatus).HasDefaultValue(true);
             entity.Property(e => e.NewsTitleSys)
                 .HasMaxLength(250)
@@ -3712,6 +3864,28 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.NewsUrl)
                 .HasMaxLength(250)
                 .HasColumnName("NewsURL");
+        });
+
+        modelBuilder.Entity<TblNewsContent>(entity =>
+        {
+            entity.HasKey(e => e.NewsContentId);
+
+            entity.ToTable("tbl_NewsContent", "dbo");
+
+            entity.Property(e => e.NewsContentId).HasColumnName("NewsContentID");
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.NewsDateTime)
+                .HasMaxLength(250)
+                .HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.NewsDetails).HasMaxLength(250);
+            entity.Property(e => e.NewsId).HasColumnName("NewsID");
+            entity.Property(e => e.NewsShortDescription).HasMaxLength(250);
+            entity.Property(e => e.NewsTitle).HasMaxLength(250);
+
+            entity.HasOne(d => d.News).WithMany(p => p.TblNewsContents)
+                .HasForeignKey(d => d.NewsId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_tbl_NewsContent_tbl_News");
         });
 
         modelBuilder.Entity<TblNewsGallery>(entity =>
@@ -4003,6 +4177,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.SliderButtonText).HasMaxLength(250);
             entity.Property(e => e.SliderMainText).HasMaxLength(250);
             entity.Property(e => e.SliderPhoto).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoMobile).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoTablet).HasMaxLength(250);
             entity.Property(e => e.SliderStatus).HasDefaultValue(false);
             entity.Property(e => e.SliderSubText).HasMaxLength(250);
             entity.Property(e => e.SliderbuttonUrl)
@@ -4239,6 +4415,27 @@ public partial class HwaidakHotelsWsdbContext : DbContext
                 .HasConstraintName("FK_tbl_Teams_Content_tbl_Teams");
         });
 
+        modelBuilder.Entity<TblTestimonial>(entity =>
+        {
+            entity.HasKey(e => e.TestimonialId);
+
+            entity.ToTable("tbl_Testimonials", "dbo");
+
+            entity.Property(e => e.TestimonialId).HasColumnName("TestimonialID");
+            entity.Property(e => e.HotelId).HasColumnName("HotelID");
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.TestimonialCountry).HasMaxLength(250);
+            entity.Property(e => e.TestimonialCustomerEmail).HasMaxLength(250);
+            entity.Property(e => e.TestimonialCustomerName).HasMaxLength(250);
+            entity.Property(e => e.TestimonialDateTime)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.TestimonialDetails).HasColumnType("ntext");
+            entity.Property(e => e.TestimonialPosition).HasDefaultValue(10);
+            entity.Property(e => e.TestimonialStatus).HasDefaultValue(false);
+            entity.Property(e => e.TestimonialTitle).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<VwAward>(entity =>
         {
             entity
@@ -4332,6 +4529,30 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.DocumentUrl)
                 .HasColumnType("ntext")
                 .HasColumnName("DocumentURL");
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
+            entity.Property(e => e.LanguageFlag).HasMaxLength(250);
+            entity.Property(e => e.LanguageName).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<VwExcursion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_Excursions", "dbo");
+
+            entity.Property(e => e.Banner).HasMaxLength(250);
+            entity.Property(e => e.BannerMobile).HasMaxLength(250);
+            entity.Property(e => e.BannerTablet).HasMaxLength(250);
+            entity.Property(e => e.ExcursionContent).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionContentId).HasColumnName("ExcursionContentID");
+            entity.Property(e => e.ExcursionId).HasColumnName("ExcursionID");
+            entity.Property(e => e.ExcursionIntro).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionMetatagDescription).HasColumnType("ntext");
+            entity.Property(e => e.ExcursionMetatagTitle).HasMaxLength(250);
+            entity.Property(e => e.ExcursionName).HasMaxLength(250);
+            entity.Property(e => e.ExcursionNameSys).HasMaxLength(250);
+            entity.Property(e => e.ExcursionPhoto).HasMaxLength(250);
             entity.Property(e => e.LangId).HasColumnName("LangID");
             entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
             entity.Property(e => e.LanguageFlag).HasMaxLength(250);
@@ -4597,6 +4818,12 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupContactUsSummery).HasMaxLength(250);
             entity.Property(e => e.GroupContactUsTitle).HasMaxLength(250);
             entity.Property(e => e.GroupContactUsTitleTop).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeAboutPhoto).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeAboutPhotoHeight).HasColumnName("GroupHomeAboutPhoto_Height");
+            entity.Property(e => e.GroupHomeAboutPhotoWidth).HasColumnName("GroupHomeAboutPhoto_Width");
+            entity.Property(e => e.GroupHomeAboutText).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeAboutTitle).HasMaxLength(250);
+            entity.Property(e => e.GroupHomeAboutTitleTop).HasMaxLength(250);
             entity.Property(e => e.GroupHomeContentId).HasColumnName("GroupHomeContentID");
             entity.Property(e => e.GroupHomeHotelTitle).HasMaxLength(250);
             entity.Property(e => e.GroupHomeHotelTitleTop).HasMaxLength(250);
@@ -4672,48 +4899,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LanguageFlag).HasMaxLength(250);
             entity.Property(e => e.LanguageName).HasMaxLength(250);
             entity.Property(e => e.NewsContentId).HasColumnName("NewsContentID");
-            entity.Property(e => e.NewsDateTime).HasColumnType("smalldatetime");
-            entity.Property(e => e.NewsDetails).HasMaxLength(250);
-            entity.Property(e => e.NewsId).HasColumnName("NewsID");
-            entity.Property(e => e.NewsItemBanner).HasMaxLength(250);
-            entity.Property(e => e.NewsItemBannerMobile)
-                .HasMaxLength(250)
-                .HasColumnName("NewsItemBanner_Mobile");
-            entity.Property(e => e.NewsItemBannerMobileHieght).HasColumnName("NewsItemBanner_MobileHieght");
-            entity.Property(e => e.NewsItemBannerMobileWidth).HasColumnName("NewsItemBanner_MobileWidth");
-            entity.Property(e => e.NewsItemBannerPhotoHieght).HasColumnName("NewsItemBannerPhoto_Hieght");
-            entity.Property(e => e.NewsItemBannerPhotoWidth).HasColumnName("NewsItemBannerPhoto_Width");
-            entity.Property(e => e.NewsItemBannerTablet)
-                .HasMaxLength(250)
-                .HasColumnName("NewsItemBanner_Tablet");
-            entity.Property(e => e.NewsItemBannerTabletHieght).HasColumnName("NewsItemBanner_TabletHieght");
-            entity.Property(e => e.NewsItemBannerTabletWidth).HasColumnName("NewsItemBanner_TabletWidth");
-            entity.Property(e => e.NewsPhoto).HasMaxLength(250);
-            entity.Property(e => e.NewsShortDescription).HasMaxLength(250);
-            entity.Property(e => e.NewsTitle).HasMaxLength(250);
-            entity.Property(e => e.NewsTitleSys)
-                .HasMaxLength(250)
-                .HasColumnName("NewsTitleSYS");
-            entity.Property(e => e.NewsUrl)
-                .HasMaxLength(250)
-                .HasColumnName("NewsURL");
-        });
-
-        modelBuilder.Entity<VwGroupNews1>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_GroupNews");
-
-            entity.Property(e => e.CreationDate).HasColumnType("smalldatetime");
-            entity.Property(e => e.DeletedDate).HasColumnType("smalldatetime");
-            entity.Property(e => e.LangId).HasColumnName("LangID");
-            entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
-            entity.Property(e => e.LanguageClass).HasMaxLength(250);
-            entity.Property(e => e.LanguageFlag).HasMaxLength(250);
-            entity.Property(e => e.LanguageName).HasMaxLength(250);
-            entity.Property(e => e.NewsContentId).HasColumnName("NewsContentID");
-            entity.Property(e => e.NewsDateTime).HasColumnType("smalldatetime");
+            entity.Property(e => e.NewsDateTime).HasMaxLength(250);
             entity.Property(e => e.NewsDetails).HasMaxLength(250);
             entity.Property(e => e.NewsId).HasColumnName("NewsID");
             entity.Property(e => e.NewsItemBanner).HasMaxLength(250);
@@ -4796,6 +4982,31 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupCarreerBannerTabletHeight).HasColumnName("GroupCarreer_BannerTablet_Height");
             entity.Property(e => e.GroupCarreerBannerTabletWidth).HasColumnName("GroupCarreer_BannerTablet_Width");
             entity.Property(e => e.GroupCarreerBannerWidth).HasColumnName("GroupCarreer_Banner_Width");
+            entity.Property(e => e.GroupCheckIn).HasColumnType("ntext");
+            entity.Property(e => e.GroupCheckInBanner)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_Banner");
+            entity.Property(e => e.GroupCheckInBannerHeight).HasColumnName("GroupCheckIn_Banner_Height");
+            entity.Property(e => e.GroupCheckInBannerMobile)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_BannerMobile");
+            entity.Property(e => e.GroupCheckInBannerMobileHeight).HasColumnName("GroupCheckIn_BannerMobile_Height");
+            entity.Property(e => e.GroupCheckInBannerMobileWidth).HasColumnName("GroupCheckIn_BannerMobile_Width");
+            entity.Property(e => e.GroupCheckInBannerTablet)
+                .HasMaxLength(250)
+                .HasColumnName("GroupCheckIn_BannerTablet");
+            entity.Property(e => e.GroupCheckInBannerTabletHeight).HasColumnName("GroupCheckIn_BannerTablet_Height");
+            entity.Property(e => e.GroupCheckInBannerTabletWidth).HasColumnName("GroupCheckIn_BannerTablet_Width");
+            entity.Property(e => e.GroupCheckInBannerWidth).HasColumnName("GroupCheckIn_Banner_Width");
+            entity.Property(e => e.GroupCheckInMetatagDescription)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_MetatagDescription");
+            entity.Property(e => e.GroupCheckInMetatagTitle)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_MetatagTitle");
+            entity.Property(e => e.GroupCheckInTitle)
+                .HasColumnType("ntext")
+                .HasColumnName("GroupCheckIn_Title");
             entity.Property(e => e.GroupContactUs).HasColumnType("ntext");
             entity.Property(e => e.GroupContactUsBanner)
                 .HasMaxLength(250)
@@ -4834,7 +5045,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupFaqBannerMobileHeight).HasColumnName("GroupFAQ_BannerMobile_Height");
             entity.Property(e => e.GroupFaqBannerMobileWidth).HasColumnName("GroupFAQ_BannerMobile_Width");
             entity.Property(e => e.GroupFaqBannerTablet)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .HasColumnName("GroupFAQ_BannerTablet");
             entity.Property(e => e.GroupFaqBannerTabletHeight).HasColumnName("GroupFAQ_BannerTablet_Height");
             entity.Property(e => e.GroupFaqBannerTabletWidth).HasColumnName("GroupFAQ_BannerTablet_Width");
@@ -4909,7 +5120,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.GroupNewsBannerMobileHeight).HasColumnName("GroupNews_BannerMobile_Height");
             entity.Property(e => e.GroupNewsBannerMobileWidth).HasColumnName("GroupNews_BannerMobile_Width");
             entity.Property(e => e.GroupNewsBannerTablet)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .HasColumnName("GroupNews_BannerTablet");
             entity.Property(e => e.GroupNewsBannerTabletHeight).HasColumnName("GroupNews_BannerTablet_Height");
             entity.Property(e => e.GroupNewsBannerTabletWidth).HasColumnName("GroupNews_BannerTablet_Width");
@@ -4925,6 +5136,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
                 .HasColumnName("GroupNews_Title");
             entity.Property(e => e.GroupOverview).HasColumnType("ntext");
             entity.Property(e => e.GroupPagesContentId).HasColumnName("GroupPagesContentID");
+            entity.Property(e => e.GroupPagesId).HasColumnName("GroupPagesID");
             entity.Property(e => e.GroupPrivacy).HasColumnType("ntext");
             entity.Property(e => e.GroupPrivacyBanner)
                 .HasMaxLength(250)
@@ -6356,6 +6568,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
                 .HasColumnName("HotelWellness_Title");
             entity.Property(e => e.HotelWhatsAppNumber).HasMaxLength(250);
             entity.Property(e => e.HotelYouTube).HasMaxLength(250);
+            entity.Property(e => e.IsEnableFaq).HasColumnName("IsEnableFAQ");
+            entity.Property(e => e.IsEnableSpa).HasColumnName("IsEnableSPA");
             entity.Property(e => e.LangId).HasColumnName("LangID");
             entity.Property(e => e.LangIdmasterHotelTypes).HasColumnName("LangIDMasterHotelTypes");
             entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
@@ -6367,6 +6581,21 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.TripAdvisorUrl)
                 .HasColumnType("ntext")
                 .HasColumnName("TripAdvisorURL");
+        });
+
+        modelBuilder.Entity<VwHotelRestaurantTypesActive>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_Hotel_RestaurantTypes_Active", "dbo");
+
+            entity.Property(e => e.FilterBy).HasMaxLength(250);
+            entity.Property(e => e.HotelId).HasColumnName("HotelID");
+            entity.Property(e => e.HotelUrl)
+                .HasMaxLength(250)
+                .HasColumnName("HotelURL");
+            entity.Property(e => e.RestaurantsTypeId).HasColumnName("RestaurantsTypeID");
+            entity.Property(e => e.RestaurantsTypeName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<VwHotelsCreditCard>(entity =>
@@ -6462,6 +6691,26 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LanguageFlag).HasMaxLength(250);
             entity.Property(e => e.LanguageName).HasMaxLength(250);
             entity.Property(e => e.LastUpdate).HasColumnType("smalldatetime");
+        });
+
+        modelBuilder.Entity<VwHotelsService>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_Hotels_Services", "dbo");
+
+            entity.Property(e => e.HotelId).HasColumnName("HotelID");
+            entity.Property(e => e.HotelNameSys).HasMaxLength(250);
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
+            entity.Property(e => e.LanguageClass).HasMaxLength(250);
+            entity.Property(e => e.LanguageFlag).HasMaxLength(250);
+            entity.Property(e => e.LanguageName).HasMaxLength(250);
+            entity.Property(e => e.ServiceContentId).HasColumnName("ServiceContentID");
+            entity.Property(e => e.ServiceIcon).HasMaxLength(250);
+            entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
+            entity.Property(e => e.ServiceNameSys).HasMaxLength(250);
+            entity.Property(e => e.SeviceName).HasMaxLength(250);
         });
 
         modelBuilder.Entity<VwHotelsSpokenLanguage>(entity =>
@@ -6666,6 +6915,7 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LastUpdate).HasColumnType("smalldatetime");
             entity.Property(e => e.MeetingCapacity).HasColumnType("ntext");
             entity.Property(e => e.MeetingCellingHeight).HasMaxLength(250);
+            entity.Property(e => e.MeetingEventsType).HasMaxLength(250);
             entity.Property(e => e.MeetingLength).HasMaxLength(250);
             entity.Property(e => e.MeetingSize).HasMaxLength(250);
             entity.Property(e => e.MeetingWidths).HasMaxLength(250);
@@ -6726,8 +6976,9 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
             entity.Property(e => e.LanguageFlag).HasMaxLength(250);
             entity.Property(e => e.LanguageName).HasMaxLength(250);
-            entity.Property(e => e.NewsDateTime).HasColumnType("smalldatetime");
-            entity.Property(e => e.NewsDetails).HasColumnType("ntext");
+            entity.Property(e => e.NewsContentId).HasColumnName("NewsContentID");
+            entity.Property(e => e.NewsDateTime).HasMaxLength(250);
+            entity.Property(e => e.NewsDetails).HasMaxLength(250);
             entity.Property(e => e.NewsId).HasColumnName("NewsID");
             entity.Property(e => e.NewsItemBanner).HasMaxLength(250);
             entity.Property(e => e.NewsItemBannerMobile)
@@ -6743,7 +6994,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.NewsItemBannerTabletHieght).HasColumnName("NewsItemBanner_TabletHieght");
             entity.Property(e => e.NewsItemBannerTabletWidth).HasColumnName("NewsItemBanner_TabletWidth");
             entity.Property(e => e.NewsPhoto).HasMaxLength(250);
-            entity.Property(e => e.NewsShortDescription).HasColumnType("ntext");
+            entity.Property(e => e.NewsShortDescription).HasMaxLength(250);
+            entity.Property(e => e.NewsTitle).HasMaxLength(250);
             entity.Property(e => e.NewsTitleSys)
                 .HasMaxLength(250)
                 .HasColumnName("NewsTitleSYS");
@@ -7120,6 +7372,8 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.SliderId).HasColumnName("SliderID");
             entity.Property(e => e.SliderMainText).HasMaxLength(250);
             entity.Property(e => e.SliderPhoto).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoMobile).HasMaxLength(250);
+            entity.Property(e => e.SliderPhotoTablet).HasMaxLength(250);
             entity.Property(e => e.SliderSubText).HasMaxLength(250);
             entity.Property(e => e.SliderbuttonUrl)
                 .HasMaxLength(250)
@@ -7301,6 +7555,30 @@ public partial class HwaidakHotelsWsdbContext : DbContext
             entity.Property(e => e.TeamUrl)
                 .HasMaxLength(250)
                 .HasColumnName("TeamURL");
+        });
+
+        modelBuilder.Entity<VwTestimonial>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_Testimonials", "dbo");
+
+            entity.Property(e => e.HotelId).HasColumnName("HotelID");
+            entity.Property(e => e.HotelUrl)
+                .HasMaxLength(250)
+                .HasColumnName("HotelURL");
+            entity.Property(e => e.LangId).HasColumnName("LangID");
+            entity.Property(e => e.LanguageAbbreviation).HasMaxLength(250);
+            entity.Property(e => e.LanguageClass).HasMaxLength(250);
+            entity.Property(e => e.LanguageFlag).HasMaxLength(250);
+            entity.Property(e => e.LanguageName).HasMaxLength(250);
+            entity.Property(e => e.TestimonialCountry).HasMaxLength(250);
+            entity.Property(e => e.TestimonialCustomerEmail).HasMaxLength(250);
+            entity.Property(e => e.TestimonialCustomerName).HasMaxLength(250);
+            entity.Property(e => e.TestimonialDateTime).HasColumnType("smalldatetime");
+            entity.Property(e => e.TestimonialDetails).HasColumnType("ntext");
+            entity.Property(e => e.TestimonialId).HasColumnName("TestimonialID");
+            entity.Property(e => e.TestimonialTitle).HasMaxLength(250);
         });
 
         OnModelCreatingPartial(modelBuilder);

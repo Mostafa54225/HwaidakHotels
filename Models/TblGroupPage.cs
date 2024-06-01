@@ -169,5 +169,23 @@ public partial class TblGroupPage
 
     public int? GroupNewsBannerTabletHeight { get; set; }
 
+    public string GroupCheckInBanner { get; set; }
+
+    public int? GroupCheckInBannerWidth { get; set; }
+
+    public int? GroupCheckInBannerHeight { get; set; }
+
+    public string GroupCheckInBannerTablet { get; set; }
+
+    public int? GroupCheckInBannerTabletWidth { get; set; }
+
+    public int? GroupCheckInBannerTabletHeight { get; set; }
+
+    public string GroupCheckInBannerMobile { get; set; }
+
+    public int? GroupCheckInBannerMobileWidth { get; set; }
+
+    public int? GroupCheckInBannerMobileHeight { get; set; }
+
     public virtual ICollection<TblGroupPagesContent> TblGroupPagesContents { get; set; } = new List<TblGroupPagesContent>();
 }

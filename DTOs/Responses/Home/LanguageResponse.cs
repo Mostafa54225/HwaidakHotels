@@ -4,5 +4,6 @@
     {
         public string LanguageName { get; set; }
         public string LanguageAbbreviation { get; set; }
+        public string LanguageFlag { get; set; }
     }
 }

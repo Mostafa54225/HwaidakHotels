@@ -33,8 +33,6 @@ public partial class VwGroupNews
 
     public bool? NewsStatus { get; set; }
 
-    public DateTime? NewsDateTime { get; set; }
-
     public string NewsUrl { get; set; }
 
     public bool? IsDeleted { get; set; }
@@ -66,4 +64,6 @@ public partial class VwGroupNews
     public int? NewsItemBannerMobileHieght { get; set; }
 
     public int LangId { get; set; }
+
+    public string NewsDateTime { get; set; }
 }

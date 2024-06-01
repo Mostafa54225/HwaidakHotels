@@ -30,7 +30,7 @@ namespace HwaidakAPI.Controllers
             if (hotel == null) return NotFound(new ApiResponse(404, "there is no hotel with this name"));
 
 
-            var facilities = await _context.VwFacilities.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.FacilityStatus == true && x.IsDeleted == false).ToListAsync();
+            var facilities = await _context.VwFacilities.Where(x => x.LanguageAbbreviation == languageCode && x.HotelUrl == hotelUrl && x.FacilityStatus == true && x.IsDeleted == false).OrderBy(x => x.FacilityPosition).ToListAsync();
 
             var facilitiesDto = _mapper.Map<List<GetFacility>>(facilities);
 
@@ -39,8 +39,14 @@ namespace HwaidakAPI.Controllers
             {
                 PageTitle = hotel.HotelFacilitiesTitle,
                 PageBannerPC = _configuration["ImagesLink"] + hotel.HotelFacilitiesBanner,
+                PageBannerColorOverlayFrom = hotel.HotelFacilitiesBannerColorOverlayFrom,
+                PageBannerColorOverlayTo = hotel.HotelFacilitiesBannerColorOverlayTo,
                 PageBannerMobile = _configuration["ImagesLink"] + hotel.HotelFacilitiesBannerMobile,
+                PageBannerMobileOverlayFrom = hotel.HotelFacilitiesBannerMobileColorOverlayFrom,
+                PageBannerMobileOverlayTo = hotel.HotelFacilitiesBannerMobileColorOverlayTo,
                 PageBannerTablet = _configuration["ImagesLink"] + hotel.HotelFacilitiesBannerTablet,
+                PageBannerTabletOverlayFrom = hotel.HotelFacilitiesBannerTabletColorOverlayFrom,
+                PageBannerTabletOverlayTo = hotel.HotelFacilitiesBannerTabletColorOverlayTo,
                 PageText = hotel.HotelFacilities,
                 PageMetatagTitle = hotel.HotelFacilitiesMetatagTitle,
                 PageMetatagDescription = hotel.HotelFacilitiesMetatagDescription

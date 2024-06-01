@@ -100,4 +100,16 @@ public partial class VwGroupHome
     public string GroupContactUsTitle { get; set; }
 
     public string GroupContactUsSummery { get; set; }
+
+    public string GroupHomeAboutPhoto { get; set; }
+
+    public int? GroupHomeAboutPhotoWidth { get; set; }
+
+    public int? GroupHomeAboutPhotoHeight { get; set; }
+
+    public string GroupHomeAboutTitleTop { get; set; }
+
+    public string GroupHomeAboutTitle { get; set; }
+
+    public string GroupHomeAboutText { get; set; }
 }
